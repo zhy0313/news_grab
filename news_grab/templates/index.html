@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>24h热点科技新闻</title>
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+    $(document).ready(function(){
+
+        $.ajax({url:"/list/",success:function(result){
+            for(var i in result){
+                var news_source = JSON.stringify(result[i]['news_source']).substring(1, JSON.stringify(result[i]['news_source']).length-1)
+                var title = JSON.stringify(result[i]['title']).substring(1, JSON.stringify(result[i]['title']).length-1)
+                var url = JSON.stringify(result[i]['url'])
+                var pub_time = JSON.stringify(result[i]['pub_time']).substring(12, JSON.stringify(result[i]['pub_time']).length-4)
+                $("#newsList").append('<a href=' + url + 'class="list-group-item"><h4>' + title + '</h4><div style="text-align:right;">' + news_source + ' ' + pub_time + '</div></a>');
+            };
+        }});
+
+        $.ajax({url:"/keyword/",success:function(result){
+            for(var i in result){
+                var keyword = JSON.stringify(result[i]['keyword']).substring(1, JSON.stringify(result[i]['keyword']).length-1)
+                var power = JSON.stringify(result[i]['power'])
+                $("#keyWords").append('<li><h2><a href="kw' + keyword + '">' + keyword + '</a></h2>'+ '权重: ' + power +'</li>');
+            };
+        }});
+    });
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="jumbotron">
+                    <h2>
+                        24小时热点科技新闻
+                    </h2>
+                </div>
+            </div>
+        </div>
+        <div class="row clearfix">
+            <div class="col-md-8 column">
+                <div id="newsList" class="list-group">
+                </div>
+            </div>
+            <div class="col-md-4 column">
+                <ul id="keyWords">
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
